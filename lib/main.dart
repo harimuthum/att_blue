@@ -1,10 +1,13 @@
 import 'package:att_blue/pages/home_page.dart';
+import 'package:att_blue/pages/list.dart';
 import 'package:att_blue/pages/login_page.dart';
 import 'package:att_blue/pages/staff_home.dart';
 import 'package:att_blue/pages/student_home.dart';
 import 'package:att_blue/pages/register_page.dart';
+import 'package:att_blue/pages/student_list.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -34,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/register',
+      initialRoute: '/staffHome',
       // home: user != null ? Register() : Login(),
       routes: {
         '/': (context) => user != null ? const HomePage() : const Login(),
@@ -44,6 +47,8 @@ class _MyAppState extends State<MyApp> {
             user != null ? const StudentHomePage() : const Login(),
         '/staffHome': (context) =>
             user != null ? const StaffHomePage() : const Login(),
+        '/studentList': (context) => const StudentList(),
+        '/list': (context) => ItemList(),
       },
       // home: const Register(), //const WidgetTree(),
     );
