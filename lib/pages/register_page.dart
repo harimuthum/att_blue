@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, unused_import
 
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -147,6 +148,43 @@ class _RegisterState extends State<Register> {
     ));
   }
 
+  bool validateRegisterNumber(String regNo) {
+    int stateCheck = 0;
+    if (regNo.length != 6) {
+      return false;
+    }
+
+    // Validation 1: Last 3 indices are only digits between 001 and 210
+    RegExp last3DigitsRegExp = RegExp(r'^[0-9]{3}$');
+    if (!last3DigitsRegExp.hasMatch(regNo.substring(regNo.length - 3))) {
+      return false;
+    }
+
+    int last3Digits = int.parse(regNo.substring(regNo.length - 3));
+    if (last3Digits < 1 || last3Digits > 210) {
+      return false;
+    } else {
+      stateCheck++;
+    }
+
+    // Validation 2: Check possible characters at the 4th index from the end
+    String fourthIndexFromEnd = regNo[regNo.length - 4];
+
+    if (['B', 'C', 'D', 'E', 'F'].contains(fourthIndexFromEnd)) {
+      // return true;
+      stateCheck++;
+    }
+
+    // Validation 3: Check the first 2 indices of regNo are ['20', '21']
+    RegExp first2DigitsRegExp = RegExp(r'^[2][0-3]$');
+    if (first2DigitsRegExp.hasMatch(regNo.substring(0, 2))) {
+      stateCheck++;
+    }
+
+    // return false;
+    return stateCheck == 3 ? true : false;
+  }
+
   Widget _registerBtn() {
     return SizedBox(
         width: double.infinity,
@@ -171,6 +209,8 @@ class _RegisterState extends State<Register> {
               _showSnackBar('Please fill all the fields');
             } else if (password != confirmPassword) {
               _showSnackBar('Passwords don\'t match');
+            } else if (!validateRegisterNumber(regno)) {
+              _showSnackBar('Not a valid Register Number');
             } else if (!email.toLowerCase().endsWith('@student.tce.edu')) {
               // setState(() {
               //   errorMsg = 'Not a valid Email';
@@ -277,7 +317,8 @@ class _RegisterState extends State<Register> {
                   ),
                   _entryField('Name', _nameCtrl),
                   _entryField('Email', _emailCtrl),
-                  _entryField('Register Number', _regNoCtrl),
+                  _entryField(
+                      'Register Number (Eg: 20CXXX, 21CXXX)', _regNoCtrl),
                   _semesterDropdown(),
                   _slotDropdown(),
                   _entryField('Password', _passwordCtrl),
