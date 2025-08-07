@@ -1,4 +1,4 @@
-# Bluetooth Attendance app
+# BTap - Bluetooth Attendance app
 Our project is a Bluetooth attendance system that can be used to take attendance in classes instantly. It uses [Nearby Connections API](https://developers.google.com/nearby/connections/overview) to discover nearby devices and mark attendance on the database. The communication model used is an advertise-discover communication model in which the teacher acts as the advertiser and the students discover the advertiser, i.e the teacher. This is a 1 to N connection.
 
 The teacher has to select the semester, subject and slot for which they are taking attendance and click the submit button. Now the device starts advertising. 
